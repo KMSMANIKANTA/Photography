@@ -3,17 +3,27 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { Mail, Lock, User, ArrowRight } from "lucide-react";
 import ParticleBackground from "../components/ParticleBackground";
+import { useAuth } from "../context/AuthContext";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const { login, signup, isLoading, error } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      if (isLogin) {
+        await login(data.email, data.password);
+      } else {
+        await signup(data.name, data.email, data.password);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -28,6 +38,12 @@ const Auth = () => {
             <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white neon-text">
               {isLogin ? "Welcome Back" : "Create Account"}
             </h2>
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-100 rounded-lg">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {!isLogin && (
@@ -45,7 +61,9 @@ const Auth = () => {
                     />
                   </div>
                   {errors.name && (
-                    <span className="text-red-500 text-sm">Name is required</span>
+                    <span className="text-red-500 text-sm">
+                      Name is required
+                    </span>
                   )}
                 </div>
               )}
@@ -95,8 +113,15 @@ const Auth = () => {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/20">
-                <span>{isLogin ? "Sign In" : "Create Account"}</span>
+                disabled={isLoading}
+                className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span>
+                  {isLoading
+                    ? "Loading..."
+                    : isLogin
+                    ? "Sign In"
+                    : "Create Account"}
+                </span>
                 <ArrowRight className="h-5 w-5" />
               </button>
             </form>

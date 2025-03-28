@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Camera, Sun, Moon } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
 import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
+import { useTheme } from "./context/ThemeContext";
+import { useUI } from "./context/UIContext";
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  const { darkMode, toggleTheme } = useTheme();
+  const { mousePos } = useUI();
 
   return (
     <Router>
@@ -37,7 +30,7 @@ function App() {
 
           <Navbar>
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
               {darkMode ? (
                 <Sun className="text-neon-yellow" />

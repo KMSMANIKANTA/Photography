@@ -7,11 +7,11 @@ import WebTeam from "../components/WebTeam";
 
 const Home = () => {
   return (
-    <div className="pt-16">
+    <div className="pt-16 sm:pt-20">
       <HeroComponent />
       <AboutComponent />
       <TopImagesComponent />
-      <WebTeam/>
+      <WebTeam />
       <FooterComponent />
     </div>
   );
