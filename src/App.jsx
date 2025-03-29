@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Sun, Moon } from "lucide-react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -14,41 +14,37 @@ function App() {
   const { mousePos } = useUI();
 
   return (
-    <Router>
-      <div className={darkMode ? "dark" : "light"}>
-        <div className="min-h-screen relative">
-          {/* Neon cursor (only on homepage) */}
-          <div
-            className="neon-cursor"
-            style={{
-              backgroundColor: darkMode ? "#71F6FB" : "#EE1B9C",
-              transform: `translate(${mousePos.x - 10}px, ${
-                mousePos.y - 10
-              }px)`,
-            }}
-          />
+    <div className={darkMode ? "dark" : "light"}>
+      <div className="min-h-screen relative">
+        {/* Neon cursor (only on homepage) */}
+        <div
+          className="neon-cursor"
+          style={{
+            backgroundColor: darkMode ? "#71F6FB" : "#EE1B9C",
+            transform: `translate(${mousePos.x - 10}px, ${mousePos.y - 10}px)`,
+          }}
+        />
 
-          <Navbar>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
-              {darkMode ? (
-                <Sun className="text-neon-yellow" />
-              ) : (
-                <Moon className="text-neon-purple" />
-              )}
-            </button>
-          </Navbar>
+        <Navbar>
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+            {darkMode ? (
+              <Sun className="text-neon-yellow" />
+            ) : (
+              <Moon className="text-neon-purple" />
+            )}
+          </button>
+        </Navbar>
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/auth" element={<Auth />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/auth" element={<Auth />} />
+        </Routes>
       </div>
-    </Router>
+    </div>
   );
 }
 
